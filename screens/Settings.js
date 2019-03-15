@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Linking, ScrollView, Text, View } from 'react-native';
 import { List, Switch, Divider } from 'react-native-paper';
 import Colors from '../assets/Colors';
+import Transcripts from '../components/Transcripts';
 
 export default class Settings extends Component {
   constructor(props) {
@@ -58,10 +59,6 @@ export default class Settings extends Component {
             Google Privacy Statement
           </Text>
         </List.Section>
-        <List.Section>
-          <List.Subheader>All Transcripts</List.Subheader>
-          <Divider />
-        </List.Section>
       </View>
     )
   }
@@ -72,6 +69,9 @@ export default class Settings extends Component {
     return (
       <ScrollView style={container}>
         {this.settingsItems()}
+        <Transcripts
+          handleItemTapped={() => this.props.navigation.push('Transcript')}
+          title="All Transcripts" />
       </ScrollView>
     );
   }

@@ -11,10 +11,6 @@ import GoogleAsst from '../assets/Google_Assistant_logo.png';
 import Privacy from '../assets/1_p194CR1zg1umsgDlbQlmSw.png';
 
 export default class Onboarding extends Component {
-  static navigationOptions = {
-    header: null
-  }
-  
   constructor(props) {
     super(props);
 
@@ -37,7 +33,7 @@ export default class Onboarding extends Component {
     const nextIndex = this.state.index + 1;
 
     if (isLast) {
-      this.props.navigation.navigate('Main')
+      this.props.navigation.navigate('Main');
     } else {
       this.refs.scrollView.scrollTo({ x: viewWidth * nextIndex, y: 0, animated: true });
       this.setState({ index: nextIndex });

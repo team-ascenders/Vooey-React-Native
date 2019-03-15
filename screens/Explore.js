@@ -3,6 +3,7 @@ import { Image, ScrollView, View } from 'react-native';
 import GravityView from '../components/GravityView';
 
 import BubblesStatic from '../assets/Bubbles-Static.png';
+import Transcripts from '../components/Transcripts';
 
 export default class Explore extends Component {
   render() {
@@ -27,6 +28,9 @@ export default class Explore extends Component {
           resizeMode='contain'
           source={BubblesStatic}
           style={bubblesStatic} />
+        <Transcripts
+          handleItemTapped={() => this.props.navigation.push('Transcript')}
+          title="In your words" />
       </ScrollView>
     );
   }

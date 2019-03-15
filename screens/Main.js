@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Alert, Image, Platform, SafeAreaView, StatusBar, TouchableOpacity, View } from 'react-native';
 import { Appbar, Divider } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import { Transition } from 'react-navigation-fluid-transitions';
 
 import Colors from '../assets/Colors';
 import GoogleMic from '../assets/Google_mic.svg.png';
@@ -11,10 +12,6 @@ import Settings from './Settings';
 import Todo from './Todo';
 
 export default class Main extends Component {
-  static navigationOptions = {
-    header: null
-  }
-
   constructor(props) {
     super(props);
 
@@ -51,10 +48,10 @@ export default class Main extends Component {
 
   currentContentView = () => {
     switch (this.state.selectedScreen) {
-      case 0: return <Home />
+      case 0: return <Home navigation={this.props.navigation} />
       case 1: return <Todo />
-      case 2: return <Explore />
-      case 3: return <Settings />
+      case 2: return <Explore navigation={this.props.navigation} />
+      case 3: return <Settings navigation={this.props.navigation} />
     }
   }
 
@@ -64,7 +61,8 @@ export default class Main extends Component {
 
     let container = {
       flex: 1,
-      paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0
+      paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+      backgroundColor: 'white'
     };
 
     let bottom = {
@@ -125,7 +123,9 @@ export default class Main extends Component {
           <Divider />
         </View>
         {this.currentContentView()}
-        <View style={bottom}>
+        <Transition 
+          appear="bottom"
+          style={bottom}>
           <Appbar style={appbar}>
             <Appbar.Action
               color={selectedScreen == 0 ? Colors.blue : Colors.gray}
@@ -163,7 +163,7 @@ export default class Main extends Component {
               icon="settings"
               onPress={() => this.setState({ selectedScreen: 3 })} />
           </Appbar>
-        </View>
+        </Transition>
       </View>
     );
   }

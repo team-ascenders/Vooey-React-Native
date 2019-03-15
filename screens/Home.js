@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { Image, ScrollView, RefreshControl } from 'react-native';
+import { Image, ScrollView, RefreshControl, View } from 'react-native';
 import { Button, Card, Title, Paragraph } from 'react-native-paper';
-import Dimensions from 'Dimensions';
+import { Transition } from 'react-navigation-fluid-transitions';
 
 import GoodAfternoon from '../assets/GoodAfternoon.png';
+import WorkingParents from '../assets/working-parents.jpg';
 import ArticleCard from '../assets/ArticleCard.png';
 import Colors from '../assets/Colors';
 import TitleCard from '../components/TitleCard';
@@ -18,16 +19,18 @@ export default class Home extends Component {
     }
   }
 
+  handleExplorePressed = () => {
+    this.props.navigation.navigate('DrillDown');
+  }
+
   onRefresh = () => {
-    this.setState({refreshing: true});
+    this.setState({ refreshing: true });
     setTimeout(() => {
-      this.setState({refreshing: false});
+      this.setState({ refreshing: false });
     }, 2000);
   }
 
   render() {
-    const viewWidth = Dimensions.get('window').width;
-
     let container = {
       flex: 1,
     }
@@ -62,6 +65,12 @@ export default class Home extends Component {
       width: '100%',
     }
 
+    const parentCover = {
+      width: '100%',
+      height: undefined,
+      aspectRatio: 700 / 393
+    }
+
     return (
       <ScrollView
         contentContainerStyle={containerContent}
@@ -80,16 +89,20 @@ export default class Home extends Component {
           elevation={2}
           style={card}>
           <Card.Content>
-            <Title style={centerText}>Vooey asked,</Title>
-            <Paragraph style={centerText}>
-              “How do you feel about your work life balance?”
-            </Paragraph>
+            <Transition shared="vooey-question">
+              <View>
+                <Title style={centerText}>Vooey asked,</Title>
+                <Paragraph style={centerText}>
+                  “How do you feel about your work life balance?”
+                </Paragraph>
+              </View>
+            </Transition>
           </Card.Content>
           <Card.Actions style={explorButton}>
             <Button
               color={Colors.blue}
               compact={true}
-              onPress={() => console.log('')}
+              onPress={this.handleExplorePressed}
               uppercase={false}>
               Explore your answer
             </Button>
@@ -97,27 +110,67 @@ export default class Home extends Component {
         </Card>
         <TitleCard
           title="Recommended Articles">
-          <Image
-            resizeMode='contain'
-            source={ArticleCard}
-            style={articleCover} />
+          <Transition shared="parentImage">
+            <View>
+              <Image
+                resizeMode='contain'
+                source={WorkingParents}
+                style={parentCover} />
+            </View>
+          </Transition>
           <Card.Content>
             <Spacer vertical={10} />
-            <Title>Tips for Reluctant Meditators </Title>
-            <Paragraph>
-              No time for mindfulness? Dan Harris can help. With over 20 years as a counselor he…
-            </Paragraph>
+            <Transition shared="parentTitle">
+              <Title>Mindful Tips for Working Parents</Title>
+            </Transition>
+            <Transition shared="parentParagraph">
+              <Paragraph>
+                Setting aside time for formal meditation is an important way to establish a routine and get comfortable with...
+              </Paragraph>
+            </Transition>
           </Card.Content>
           <Card.Actions style={explorButton}>
             <Button
               color={Colors.blue}
               compact={true}
-              onPress={() => console.log('')}
+              onPress={() => this.props.navigation.navigate('Parenting')}
               uppercase={false}>
-              Read
+              Read More
             </Button>
           </Card.Actions>
         </TitleCard>
+        <Card
+          elevation={2}
+          style={card}>
+          <Transition shared="meditationImage">
+            <View>
+              <Image
+                resizeMode='contain'
+                source={ArticleCard}
+                style={articleCover} />
+            </View>
+          </Transition>
+          <Card.Content>
+            <Spacer vertical={10} />
+            <Transition shared="meditationTitle">
+              <Title>Tips for Reluctant Meditators</Title>
+            </Transition>
+            <Transition shared="meditationParagraph">
+              <Paragraph>
+                No time for mindfulness? Dan Harris can help. With over 20 years as a counselor he…
+              </Paragraph>
+            </Transition>
+          </Card.Content>
+          <Card.Actions style={explorButton}>
+            <Button
+              color={Colors.blue}
+              compact={true}
+              onPress={() => this.props.navigation.navigate('Meditation')}
+              uppercase={false}>
+              Read More
+            </Button>
+          </Card.Actions>
+        </Card>
         <Spacer vertical={100} />
       </ScrollView>
     );
