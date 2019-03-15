@@ -7,10 +7,16 @@
     "test": "jest"
   },
   "dependencies": {
+    "matter-attractors": "^0.1.6",
+    "matter-js": "^0.14.2",
     "react": "16.8.3",
     "react-native": "0.59.0",
+    "react-native-game-engine": "^0.11.5",
     "react-native-gesture-handler": "^1.1.0",
+    "react-native-navigation-bar-color": "0.0.9",
     "react-native-paper": "^2.13.0",
+    "react-native-swipe-list-view": "^1.5.3",
+    "react-native-vector-icons": "^6.4.1",
     "react-native-voice": "^0.2.6",
     "react-navigation": "^3.3.2",
     "react-navigation-fluid-transitions": "^0.3.1"
