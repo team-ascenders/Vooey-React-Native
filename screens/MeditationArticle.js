@@ -49,6 +49,7 @@ export default class MeditationArticle extends Component {
           <Transition shared="meditationImage">
             <View>
               <Image
+              fadeDuration={0}
                 resizeMode='contain'
                 source={ArticleCard}
                 style={articleCover} />
@@ -59,19 +60,23 @@ export default class MeditationArticle extends Component {
               <Title>Tips for Reluctant Meditators</Title>
             </Transition>
             <Transition shared="meditationParagraph">
-              <Paragraph>
-                No time for mindfulness? Dan Harris can help. With over 20 years as a counselor he...
-  
+              <View>
+                <Paragraph>
                 Setting aside time for formal meditation is an important way to establish a routine and get comfortable with the practice. Even just a few minutes a day can make a big difference.
-  
+                </Paragraph>
+                <Paragraph>
                 “Some people complain about taking time out of their day,” said Atman Smith, who teaches meditation to underserved communities in Baltimore. “Practice is important though. It’s a tool you can use to bring yourself back to the present in stressful situations.”
-  
+                </Paragraph>
+                <Paragraph>
                 But we shouldn’t stop being mindful when we stop meditating. “The purpose of mindfulness meditation is to become mindful throughout all parts of our life, so that we’re awake, present and openhearted in everything we do,” said Tara Brach, a popular meditation teacher based near Washington, D.C. “Not just when we’re sitting on the cushion.”
-  
+                </Paragraph>
+                <Paragraph>
                 Mindfulness meditation isn’t about letting your thoughts wander. But it isn’t about trying to empty your mind, either. Instead, the practice involves paying close attention to the present moment — especially our own thoughts, emotions and sensations — whatever it is that’s happening.
-  
+                </Paragraph>
+                <Paragraph>
                 In addition to basic meditation instructions, we’ve compiled guided meditations for a few popular
             </Paragraph>
+              </View>
             </Transition>
           </View>
         </ScrollView>

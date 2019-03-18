@@ -8,6 +8,7 @@ import AppContainer from './navigation/AppContainer';
 class App extends Component {
   componentDidMount() {
     changeNavigationBarColor('white', true);
+    console.disableYellowBox = true;
   }
   
   render() {

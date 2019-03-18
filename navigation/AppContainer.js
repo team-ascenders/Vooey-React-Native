@@ -6,6 +6,8 @@ import { FluidNavigator } from 'react-navigation-fluid-transitions';
 import Transcript from '../screens/Transcript';
 import ParentingArticle from '../screens/ParentingArticle';
 import MeditationArticle from '../screens/MeditationArticle';
+import Puppet from '../screens/Puppet'
+import GravityView from '../components/GravityView';
 
 const DrillDownScene = createStackNavigator(
   {
@@ -38,11 +40,14 @@ const AppNavigator = FluidNavigator(
     },
     Transcript: {
       screen: Transcript
-    }
+    },
+    Puppet: {
+      screen: Puppet
+    },
   },
   {
     // TODO: CHANGE THIS BACK
-    initialRouteName: "Main",
+    initialRouteName: "Onboarding",
     headerMode: 'none'
   }
 );

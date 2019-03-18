@@ -3,8 +3,11 @@ import { View } from 'react-native';
 import Matter from "matter-js";
 import { GameEngine } from "react-native-game-engine";
 import MatterAttractors from 'matter-attractors';
+import PubNubReact from 'pubnub-react';
 
 import Bubble from '../components/Bubble';
+import PuppetProvider from '../providers/PuppetProvider';
+import Colors from '../assets/Colors';
 
 const Physics = (entities, { time }) => {
   let engine = entities["physics"].engine;
@@ -14,33 +17,6 @@ const Physics = (entities, { time }) => {
 
 let boxIds = 0;
 
-const CreateBox = (entities, { touches, screen }) => {
-  let world = entities["physics"].world;
-  let boxSize = Math.trunc(Math.max(screen.width, screen.height) * 0.075);
-  touches.filter(t => t.type === "press").forEach(t => {
-    let body = Matter.Bodies.rectangle(
-      t.event.pageX,
-      t.event.pageY,
-      boxSize,
-      boxSize,
-      {
-        frictionAir: 0.021,
-        restitution: 1.0
-      }
-    );
-
-    Matter.World.add(world, [body]);
-
-    entities[++boxIds] = {
-      body: body,
-      size: [boxSize, boxSize],
-      color: boxIds % 2 == 0 ? "pink" : "#B8E986",
-      renderer: Bubble
-    };
-  });
-  return entities;
-};
-
 export default class GravityView extends Component {
   constructor(props) {
     super(props);
@@ -48,8 +24,10 @@ export default class GravityView extends Component {
     this.state = {
       viewWidth: 100,
       viewHeight: 100,
-      didLayout: false
+      didLayout: false,
     }
+
+    this.currentWords = 0;
   }
 
   updateDimensions = (event) => {
@@ -62,20 +40,80 @@ export default class GravityView extends Component {
 
   render() {
     let container = {
-      flex: 1,
-      backgroundColor: 'blue'
+      width: '100%',
+      height: undefined,
+      aspectRatio: 0.8,
     }
+    const variance = 200;
+    const bubbleBase = 100;
+    const bubbleVariance = 20;
 
     const { didLayout, viewWidth, viewHeight } = this.state;
-    const boxSize = Math.trunc(Math.max(viewWidth, viewHeight) * 0.075);
-    const initialBox = Matter.Bodies.rectangle(viewWidth / 2, viewHeight / 2, boxSize, boxSize);
-    const floor = Matter.Bodies.rectangle(viewWidth / 2, viewHeight - boxSize / 2, viewWidth, boxSize, { isStatic: true });
+
+    const floor1 = Matter.Bodies.rectangle(viewWidth / 2, viewHeight + 0.5, viewWidth, 1, { isStatic: true });
+    const floor2 = Matter.Bodies.rectangle(viewWidth / 2, -0.5, viewWidth, 1, { isStatic: true });
+    const floor3 = Matter.Bodies.rectangle(-0.5, viewHeight / 2, 1, viewHeight, { isStatic: true });
+    const floor4 = Matter.Bodies.rectangle(viewWidth + 0.5, viewHeight / 2, 1, viewHeight, { isStatic: true });
+
     const engine = Matter.Engine.create({ enableSleeping: false });
+
+    this.engine = engine;
 
     const world = engine.world;
 
+    world.gravity.x = 0
+    world.gravity.y = 0
+
     Matter.use(MatterAttractors);
-    Matter.World.add(world, [initialBox, floor]);
+    Matter.World.add(world, [floor1, floor2, floor3, floor4]);
+
+    const CreateBox = (entities, { touches, screen }) => {
+      let world = entities["physics"].world;
+      let boxSize = bubbleBase + Math.floor(Math.random() * 2 * bubbleVariance);
+      var bodies = []
+
+      if (PuppetProvider.terms.length > this.currentWords) {
+        let body = Matter.Bodies.circle(
+          viewWidth / 2 + Math.floor(Math.random() * 2 * variance) - variance,
+          viewHeight / 2 + Math.floor(Math.random() * 2 * variance) - variance,
+          boxSize / 2,
+          {
+            frictionAir: 0.021,
+            restitution: 1.0,
+            plugin: {
+              attractors: [
+                function (bodyA, bodyB) {
+                  if (!bodyA.isCircle || !bodyB.isCircle) { return { x: 0, y: 0 }; }
+
+                  var avgX = (bodyA.position.x + bodyB.position.x - viewWidth) / 2;
+                  var avgY = (bodyA.position.y + bodyB.position.y - viewHeight) / 2;
+
+                  return {
+                    x: (bodyA.position.x - bodyB.position.x - avgX) * 2e-6,
+                    y: (bodyA.position.y - bodyB.position.y - avgY) * 2e-6,
+                  };
+                }
+              ]
+            }
+          }
+        );
+
+        entities[++boxIds] = {
+          body: body,
+          size: [boxSize, boxSize],
+          color: PuppetProvider.terms[this.currentWords],
+          renderer: Bubble
+        };
+
+        body.isCircle = true;
+        bodies.push(body);
+        this.currentWords++;
+      }
+
+      Matter.World.add(world, bodies);
+
+      return entities;
+    };
 
     return (
       <View
@@ -88,19 +126,8 @@ export default class GravityView extends Component {
               engine: engine,
               world: world
             },
-            initialBox: {
-              body: initialBox,
-              size: [boxSize, boxSize],
-              color: 'red',
-              renderer: Bubble
-            },
-            floor: {
-              body: floor,
-              size: [viewWidth, boxSize],
-              color: "green",
-              renderer: Bubble
-            }
-          }}>
+          }}
+          style={{ flex: 1 }}>
         </GameEngine>}
       </View>
     );

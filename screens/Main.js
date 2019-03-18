@@ -55,6 +55,21 @@ export default class Main extends Component {
     }
   }
 
+  handleMic = () => {
+    this.props.navigation.navigate('Puppet');
+  }
+
+  handleKeyboard = () => {
+    Alert.alert(
+      'Error',
+      'Keyboard entry is disabled in this build.',
+      [
+        {text: 'OK'},
+      ],
+      {cancelable: false},
+    );
+  }
+
   render() {
     let { selectedScreen, segmentHeight } = this.state;
     let segmentIconSize = 24;
@@ -144,10 +159,10 @@ export default class Main extends Component {
                 color={Colors.gray}
                 size={segmentIconSize}
                 style={keyboard}
-                onPress={() => console.log("df")} />
+                onPress={() => this.handleKeyboard()} />
               <TouchableOpacity
                 style={googleMic}
-                onPress={() => console.log("df")}>
+                onPress={() => this.handleMic()}>
                 <Image
                   resizeMode='contain'
                   source={GoogleMic}

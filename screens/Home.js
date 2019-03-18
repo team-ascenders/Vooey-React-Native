@@ -113,6 +113,7 @@ export default class Home extends Component {
           <Transition shared="parentImage">
             <View>
               <Image
+                fadeDuration={0}
                 resizeMode='contain'
                 source={WorkingParents}
                 style={parentCover} />
@@ -121,10 +122,10 @@ export default class Home extends Component {
           <Card.Content>
             <Spacer vertical={10} />
             <Transition shared="parentTitle">
-              <Title>Mindful Tips for Working Parents</Title>
+              <Title style={{backgroundColor: Colors.clear}}>Mindful Tips for Working Parents</Title>
             </Transition>
             <Transition shared="parentParagraph">
-              <Paragraph>
+              <Paragraph style={{backgroundColor: Colors.clear}}>
                 Setting aside time for formal meditation is an important way to establish a routine and get comfortable with...
               </Paragraph>
             </Transition>
@@ -145,6 +146,7 @@ export default class Home extends Component {
           <Transition shared="meditationImage">
             <View>
               <Image
+                fadeDuration={0}
                 resizeMode='contain'
                 source={ArticleCard}
                 style={articleCover} />
@@ -153,10 +155,10 @@ export default class Home extends Component {
           <Card.Content>
             <Spacer vertical={10} />
             <Transition shared="meditationTitle">
-              <Title>Tips for Reluctant Meditators</Title>
+              <Title style={{backgroundColor: Colors.clear}}>Tips for Reluctant Meditators</Title>
             </Transition>
             <Transition shared="meditationParagraph">
-              <Paragraph>
+              <Paragraph style={{backgroundColor: Colors.clear}}>
                 No time for mindfulness? Dan Harris can help. With over 20 years as a counselor he…
               </Paragraph>
             </Transition>
